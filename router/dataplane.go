@@ -112,7 +112,8 @@ type DataPlane struct {
 
 	// The pool that stores all the packet buffers as described in the design document. See
 	// https://github.com/scionproto/scion/blob/master/doc/dev/design/BorderRouter.rst
-	packetPool chan []byte
+	packetPool  chan []byte
+	EndHostPort int
 }
 
 var (
@@ -1657,14 +1658,14 @@ func (d *DataPlane) resolveLocalDst(s slayers.SCION) (*net.UDPAddr, error) {
 		}
 		return a, nil
 	case addr.HostTypeIP:
-		return addEndhostPort(dst.IP().AsSlice()), nil
+		return addEndhostPort(dst.IP().AsSlice(), d.EndHostPort), nil
 	default:
 		panic("unexpected address type returned from DstAddr")
 	}
 }
 
-func addEndhostPort(dst net.IP) *net.UDPAddr {
-	return &net.UDPAddr{IP: dst, Port: topology.EndhostPort}
+func addEndhostPort(dst net.IP, endhostPort int) *net.UDPAddr {
+	return &net.UDPAddr{IP: dst, Port: endhostPort}
 }
 
 // TODO(matzf) this function is now only used to update the OneHop-path.

@@ -59,7 +59,8 @@ func realMain(ctx context.Context) error {
 	dp := &router.Connector{
 		EndHostPort: globalCfg.Router.EndHostPort,
 		DataPlane: router.DataPlane{
-			Metrics: metrics,
+			EndHostPort: globalCfg.Router.EndHostPort,
+			Metrics:     metrics,
 		},
 		ReceiveBufferSize: globalCfg.Router.ReceiveBufferSize,
 		SendBufferSize:    globalCfg.Router.SendBufferSize,
