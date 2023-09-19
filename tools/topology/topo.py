@@ -289,10 +289,10 @@ class TopoGenerator(object):
         addr_type = addr_type_from_underlay(as_conf.get('underlay', DEFAULT_UNDERLAY))
         for (linkto, remote, attrs, l_br, r_br, l_ifid, r_ifid) in self.links[topo_id]:
             self._gen_br_entry(topo_id, l_ifid, remote, r_ifid,
-                               linkto, attrs, l_br, r_br, addr_type)
+                               linkto, attrs, l_br, r_br, addr_type, as_conf.get('endhost_port', 30041))
 
     def _gen_br_entry(self, local, l_ifid, remote, r_ifid, remote_type, attrs,
-                      local_br, remote_br, addr_type):
+                      local_br, remote_br, addr_type, endhost_port):
         link_addr_type = addr_type_from_underlay(attrs.get('underlay', DEFAULT_UNDERLAY))
         public_addr, remote_addr = self._reg_link_addrs(local_br, remote_br, l_ifid,
                                                         r_ifid, link_addr_type)
@@ -302,8 +302,8 @@ class TopoGenerator(object):
             intl_port = 30042
             if not self.args.docker:
                 intl_port = self.args.port_gen.register(local_br + "_internal")
-
             self.topo_dicts[local]["border_routers"][local_br] = {
+                'endhost_port': endhost_port,
                 'internal_addr': join_host_port(intl_addr.ip, intl_port),
                 'interfaces': {
                     l_ifid: self._gen_br_intf(remote, public_addr, remote_addr, attrs, remote_type)

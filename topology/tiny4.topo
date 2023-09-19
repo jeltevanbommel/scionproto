@@ -6,10 +6,13 @@ ASes:
     authoritative: true
     issuing: true
     mtu: 1400
+    endhost_port: 30041
   "1-ff00:0:111":
     cert_issuer: 1-ff00:0:110
+    endhost_port: 30042
   "1-ff00:0:112":
     cert_issuer: 1-ff00:0:110
+    endhost_port: 30043
 links:
   - {a: "1-ff00:0:110#1", b: "1-ff00:0:111#41", linkAtoB: CHILD, mtu: 1280}
   - {a: "1-ff00:0:110#2", b: "1-ff00:0:112#1", linkAtoB: CHILD, bw: 500}

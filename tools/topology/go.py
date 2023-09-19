@@ -89,6 +89,9 @@ class GoGenerator(object):
             'metrics': {
                 'prometheus': prom_addr(v['internal_addr'], DEFAULT_BR_PROM_PORT),
             },
+            'router': {
+                'endhost_port': v['endhost_port'],
+            },
             'features': translate_features(self.args.features),
             'api': {
                 'addr': prom_addr(v['internal_addr'], DEFAULT_BR_PROM_PORT+700)

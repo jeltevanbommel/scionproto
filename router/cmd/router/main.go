@@ -57,6 +57,7 @@ func realMain(ctx context.Context) error {
 	g, errCtx := errgroup.WithContext(ctx)
 	metrics := router.NewMetrics()
 	dp := &router.Connector{
+		EndHostPort: globalCfg.Router.EndHostPort,
 		DataPlane: router.DataPlane{
 			Metrics: metrics,
 		},

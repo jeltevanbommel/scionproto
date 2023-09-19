@@ -39,6 +39,7 @@ type Config struct {
 }
 
 type RouterConfig struct {
+	EndHostPort           int `toml:"endhost_port,omitempty"`
 	ReceiveBufferSize     int `toml:"receive_buffer_size,omitempty"`
 	SendBufferSize        int `toml:"send_buffer_size,omitempty"`
 	NumProcessors         int `toml:"num_processors,omitempty"`
@@ -79,6 +80,9 @@ func (cfg *RouterConfig) InitDefaults() {
 	}
 	if cfg.BatchSize == 0 {
 		cfg.BatchSize = 256
+	}
+	if cfg.EndHostPort == 0 {
+		cfg.EndHostPort = 30041
 	}
 }
 

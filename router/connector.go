@@ -22,7 +22,6 @@ import (
 	"github.com/scionproto/scion/pkg/log"
 	"github.com/scionproto/scion/pkg/private/common"
 	"github.com/scionproto/scion/pkg/private/serrors"
-	"github.com/scionproto/scion/private/topology"
 	"github.com/scionproto/scion/private/underlay/conn"
 	"github.com/scionproto/scion/router/control"
 )
@@ -40,6 +39,7 @@ type Connector struct {
 
 	ReceiveBufferSize int
 	SendBufferSize    int
+	EndHostPort       int
 }
 
 var errMultiIA = serrors.New("different IA not allowed")
@@ -148,22 +148,22 @@ func (c *Connector) AddExternalInterface(localIfID common.IFIDType, link control
 func (c *Connector) AddSvc(ia addr.IA, svc addr.SVC, ip net.IP) error {
 	c.mtx.Lock()
 	defer c.mtx.Unlock()
-	log.Debug("Adding service", "isd_as", ia, "svc", svc, "ip", ip)
+	log.Debug("Adding service", "isd_as", ia, "svc", svc, "ip", ip, "port", c.EndHostPort)
 	if !c.ia.Equal(ia) {
 		return serrors.WithCtx(errMultiIA, "current", c.ia, "new", ia)
 	}
-	return c.DataPlane.AddSvc(svc, &net.UDPAddr{IP: ip, Port: topology.EndhostPort})
+	return c.DataPlane.AddSvc(svc, &net.UDPAddr{IP: ip, Port: c.EndHostPort})
 }
 
 // DelSvc deletes the service entry for the given ISD-AS and IP pair.
 func (c *Connector) DelSvc(ia addr.IA, svc addr.SVC, ip net.IP) error {
 	c.mtx.Lock()
 	defer c.mtx.Unlock()
-	log.Debug("Deleting service", "isd_as", ia, "svc", svc, "ip", ip)
+	log.Debug("Deleting service", "isd_as", ia, "svc", svc, "ip", ip, "port", c.EndHostPort)
 	if !c.ia.Equal(ia) {
 		return serrors.WithCtx(errMultiIA, "current", c.ia, "new", ia)
 	}
-	return c.DataPlane.DelSvc(svc, &net.UDPAddr{IP: ip, Port: topology.EndhostPort})
+	return c.DataPlane.DelSvc(svc, &net.UDPAddr{IP: ip, Port: c.EndHostPort})
 }
 
 // SetKey sets the key for the given ISD-AS at the given index.
