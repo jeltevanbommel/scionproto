@@ -23,9 +23,9 @@ cmd_topology() {
 
     echo "Create topology, configuration, and execution files."
     tools/topogen.py "$@"
-    if is_docker_be; then
-        ./tools/quiet ./tools/dc run utils_chowner
-    fi
+#    if is_docker_be; then
+#        ./tools/quiet ./tools/dc run utils_chowner
+#    fi
 }
 
 cmd_topodot() {

@@ -49,11 +49,11 @@ class DockerUtilsGenerator(object):
         self.output_base = os.environ.get('SCION_OUTPUT_BASE', os.getcwd())
 
     def generate(self):
-        self._utils_conf()
+#         self._utils_conf()
         for topo_id in self.args.topo_dicts:
             self._test_conf(topo_id)
-        if self.args.sig:
-            self._sig_testing_conf()
+#         if self.args.sig:
+#             self._sig_testing_conf()
         return self.dc_conf
 
     # TODO(JordiSubira): Remove container if not needed

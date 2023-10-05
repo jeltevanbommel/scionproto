@@ -201,11 +201,11 @@ class DockerGenerator(object):
             'networks': {},
             'user': self.user,
             'volumes': [],
-            'depends_on': {
-                'utils_chowner': {
-                    'condition': 'service_started'
-                },
-            },
+#             'depends_on': {
+#                 'utils_chowner': {
+#                     'condition': 'service_started'
+#                 },
+#             },
         }
         keys = (list(topo.get("control_service", {})) +
                 ["tester_%s" % topo_id.file_fmt()])
